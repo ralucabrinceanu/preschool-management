@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="ro">
+
+<head>
+  <title><%- locals.tabel %></title>
+  <%- include("../fragments/head.ejs") %>
+</head>
+
+<body>
+  <%- include("../fragments/header.ejs") %>
+  <main>
+    <h2>Vizualizare înregistrări</h2>
+    <h3>Tabelul: <%- locals.titlu %></h3>
+
+    <div>
+      <table class="table table-striped table-hover">
+        <thead>
+          <tr>
+            <% for (col of coloane) {%>
+            <th>
+              <% if (col.startsWith('Id')) {%>
+              <%- col %>
+              <% } else  { %>
+              <a href="/viz/<%= tabel %>?filtru=<%= col %>"><%- col %></a>
+              <% } %>
+            </th>
+            <%}%>
+              <th>Editare</th>
+              <th>Ștergere</th>
+            </tr>
+            <tbody>
+                <% let i = 0;
+                for(rand of locals.valori) {
+                    date_rand = Object.values(rand)
+                %>
+          <tr>
+            <% for (val of date_rand) {val = `${val}` %>
+            <td><%- val%></td>
+            <%}%>
+                <td>
+                    
+                <button id="openEditModal" type="button" class="editare btn btn-primary" data-toggle="modal" data-target="#staticBackdrop_<%= i%>">
+            <i class="fa-solid fa-pen-to-square"></i>
+            </button>
+
+            <div class="modal fade" id="staticBackdrop_<%= i%>" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel_<%= i%>" aria-hidden="true">
+              <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="staticBackdropLabel_<%= i%>">Modal title</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                    <form id="editForm" action="/viz/<%- locals.titlu.toLowerCase() %>" method="post">
+                      <div class="form-group">
+                      </div>
+                      <button type="submit" class="btn btn-primary">Modifică</button>
+
+                    </form>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Anulează</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            </td>
+            <td>
+              <button class="stergere btn btn-danger">
+                <i class="fa-solid fa-trash-can"></i>
+              </button>
+            </td>
+
+          </tr>
+          <%i++ }%>
+          </tbody>
+        </thead>
+      </table>
+    </div>
+  </main>
+  <%- include("../fragments/footer.ejs") %>
+</body>
+
+</html>

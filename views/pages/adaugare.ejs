@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="ro">
+
+<head>
+  <title><%- locals.titlu.split("_").join(" ") %></title>
+  <%- include("../fragments/head.ejs") %>
+</head>
+
+<body>
+  <%- include("../fragments/header.ejs") %>
+  <main>
+    <h2>Adaugă o înregistrare în tabelul <%- locals.titlu%></h2>
+    <div class="d-flex justify-content-center">
+      <form action="/inreg/<%- locals.titlu.toLowerCase() %>" method="post">
+        <% 
+    let keys = Object.keys(locals.valori[0])
+    let values = Object.values(locals.valori[0]) 
+
+    for (let i = 0; i < locals.coloane.length; i++) { 
+      let cheie = keys[i];
+      let valoare = values[i];
+      let tipInput;
+
+      if (typeof valoare === 'number' || cheie.includes("id")) {
+        tipInput = 'number';
+      } else if (cheie.includes("data")) {
+        tipInput = 'date';
+      } else if (cheie.includes("email")) {
+        tipInput = 'email';
+      } else if(cheie.includes("telefon")) {
+        tipInput = 'tel'
+      } else tipInput = 'text'
+  %>
+
+        <div class="form-group">
+          <label>
+            <%- locals.coloane[i] %>
+            <input type="<%- tipInput%>" name="<%-cheie%>" class="form-control">
+          </label>
+        </div>
+
+        <% } %>
+
+        <button type="submit" class="btn btn-primary">Adaugă</button>
+      </form>
+    </div>
+
+  </main>
+  <%- include("../fragments/footer.ejs") %>
+</body>
+
+</html>

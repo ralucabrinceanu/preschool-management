@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="ro">
+
+<head>
+  <title>Subiectul 3</title>
+  <%- include("../fragments/head.ejs") %>
+</head>
+
+<body>
+  <%- include("../fragments/header.ejs") %>
+  <main>
+    <h3>Afisarea prescolarilor care sunt inscrisi la cel putin 3 servicii.</h3>
+    <div>
+      <table class="table table-striped table-hover">
+        <thead>
+          <tr>
+            <% for (col of coloane) { %>
+            <th><%=col%></th>
+            <% } %>
+          </tr>
+        <tbody>
+          <% for(rand of locals.valori) {
+                    date_rand = Object.values(rand) 
+                %>
+          <tr>
+            <% for(val of date_rand) {val = `${val}`%>
+            <td><%- val %></td>
+
+            <% } %>
+          </tr>
+          <% } %>
+        </tbody>
+        </thead>
+      </table>
+    </div>
+
+    <div class="card">
+      <div class="card-body">
+        SELECT i.id_prescolar, CONCAT(p.nume, " ", p.prenume) AS "prescolar", COUNT(i.id_prescolar) AS "nr servicii" <br>
+        FROM inscrieri i <br>
+        INNER JOIN prescolari p ON p.id_prescolar = i.id_prescolar <br>
+        GROUP BY (i.id_prescolar) <br>
+        HAVING COUNT(i.id_prescolar) >= 3
+      </div>
+    </div>
+
+  </main>
+  <%- include("../fragments/footer.ejs") %>
+</body>
+
+</html>

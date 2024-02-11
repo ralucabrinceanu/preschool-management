@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="ro">
+
+<head>
+  <title>Subiectul 3</title>
+  <%- include("../fragments/head.ejs") %>
+</head>
+
+<body>
+  <%- include("../fragments/header.ejs") %>
+  <main>
+    <h2>Afișarea informațiilor despre preșcolari, angajați și servicii, pentru acei
+      preșcolari cu nevoi speciale(1) și înscriși la 'baschet'.
+    </h2>
+    <div>
+      <table class="table table-striped table-hover">
+        <thead>
+          <tr>
+            <% for (col of coloane) { %>
+            <th><%=col%></th>
+            <% } %>
+          </tr>
+        <tbody>
+          <% for(rand of locals.valori) {
+                    date_rand = Object.values(rand) 
+                %>
+          <tr>
+            <% for(val of date_rand) {val = `${val}`%>
+            <td><%- val %></td>
+
+            <% } %>
+          </tr>
+          <% } %>
+        </tbody>
+        </thead>
+      </table>
+    </div>
+
+    <div class="card">
+      <div class="card-body">
+        SELECT p.id_prescolar, CONCAT(p.nume, " ", p.prenume) AS "prescolar",
+        s.denumire_serv, a.id_angajat, CONCAT(a.nume, " ", a.prenume) AS "angajat",
+        pst.denumire_post <br>
+        FROM inscrieri i <br>
+        INNER JOIN prescolari p ON i.id_prescolar = p.id_prescolar <br>
+        INNER JOIN servicii s ON i.id_serviciu = s.id_serviciu <br>
+        INNER JOIN angajati a ON i.id_angajat = a.id_angajat <br>
+        INNER JOIN posturi pst ON a.id_post = pst.id_post <br>
+        WHERE p.nevoi_speciale = 1 AND lower(s.denumire_serv) = "baschet";
+      </div>
+    </div>
+  </main>
+  <%- include("../fragments/footer.ejs") %>
+</body>
+
+</html>
